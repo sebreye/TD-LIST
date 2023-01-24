@@ -2,6 +2,7 @@
     let form = document.querySelector("#new-td-form")
     let input = document.querySelector("#new-td-input")
     let list_el = document.querySelector("#tasks")
+    let filterOption = document.querySelector(".filter-todo")
 
     form.addEventListener('submit', (e)=>{
         e.preventDefault();
@@ -78,6 +79,37 @@
         task_delete_el.addEventListener('click', () => {
             list_el.removeChild(task_el);
         });
+
+        filterOption.addEventListener('click', () =>{
+            if(filterOption.value == 'all'){
+                task_el.style.display = 'flex'
+            }
+            if(filterOption.value == 'completed'){
+                for(let i = 0; i < list_el.children.length; i++){
+                    if(task_el.style.backgroundColor =="green" ){
+                        task_el.style.display = 'flex'
+                    }else{
+                        task_el.style.display = 'none'
+                    }
+                }
+            }
+            if(filterOption.value == 'uncompleted'){
+                for(let i = 0; i < list_el.children.length; i++){
+                    if(task_el.style.backgroundColor === originalColor ){
+                        task_el.style.display = 'flex'
+                    }else{
+                        task_el.style.display = 'none'
+                    }
+                }
+            }
+        })
     })
 // })
+
+// function filterToDo() {
+//     for (let i = 0; i < list_el.length; i++) {
+        
+        
+//     }
+// }
 
