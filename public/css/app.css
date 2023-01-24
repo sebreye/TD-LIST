@@ -22270,6 +22270,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: black;
+  color: white;
 }
 
 .container {
@@ -22338,6 +22340,10 @@ form input {
 ul {
   padding: 0;
   list-style: none;
+}
+
+li .todo.done {
+  background-color: #6ab04c;
 }
 
 li {

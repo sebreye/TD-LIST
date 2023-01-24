@@ -12,6 +12,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: black;
+    color: white;
 }
 
 .container {
@@ -60,15 +62,15 @@ button.btn-add {
     background: #6ab04c;
     font-weight: 700;
     color: white;
-  }
-  
-  input {
+}
+
+input {
     padding: 8px 15px;
     outline: 0;
     border: 1px solid #ddd;
     border-radius: 3px;
-  }
-  
+}
+
 
 form input {
     flex: 1;
@@ -80,10 +82,14 @@ ul {
     list-style: none;
 }
 
+li .todo.done{
+    background-color: #6ab04c;
+}
 li {
     display: flex;
     align-items: center;
     padding: 10px 0;
+    
 }
 
 li input {
