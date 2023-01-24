@@ -1,191 +1,83 @@
-const ul = document.querySelector('ul')
-const form = document.querySelector('form')
-const input = document.querySelector('form > input')
-let span_todo = document.getElementsByClassName('todo')
-// test
-const todos = [
+// window.addEventListener('load', ()=>{
+    let form = document.querySelector("#new-td-form")
+    let input = document.querySelector("#new-td-input")
+    let list_el = document.querySelector("#tasks")
 
-]
+    form.addEventListener('submit', (e)=>{
+        e.preventDefault();
 
+        let task = input.value
 
-// EventListener
-form.addEventListener('submit', (e) => {
-    let value = input.value.trim()
-  // const text = input.value.trim()
+        if (!task) {
+            alert('introduisez un tâche à faire')
+            return
+        }
 
-    e.preventDefault()
+        let task_el = document.createElement("div")
+        task_el.classList.add("task")
 
-    constVerifieErr(value)
-})
+        let task_contenu_el = document.createElement("div")
+        task_contenu_el.classList.add("content")
+        
 
-// display Todo
-const displayTodo = () => {
-  // console.log(todos.length)
-  // Array d'élément
-  const todosNode = todos.map((todo, index) => {
-    if (todo.editMode) {
-        return createTodoEditElement(todo, index)
-    } else {
-        return createTodoElement(todo, index)
-    }
-  })
+        task_el.appendChild(task_contenu_el)
 
-  ul.innerHTML = ''
-  //  the spread operator to convert our array into a comma separated list of HTML nodes
-  ul.append(...todosNode.reverse())
-}
+        let task_input_el = document.createElement('input')
+        task_input_el.classList.add('text')
+        task_input_el.type = 'text'
+        task_input_el.value = task
+        task_input_el.setAttribute('readonly', 'readonly')
+        task_contenu_el.appendChild(task_input_el)
 
-// method
-const createTodoElement = (todo, index) => {
-  // li
-  const li = document.createElement('li')
+        let task_actions_el = document.createElement('div')
+        task_actions_el.classList.add('actions')
 
-  // span
-  const span = document.createElement('span')
-  const spanClass = document.createAttribute('class')
-  spanClass.value = `todo ${todo.done ? 'done' : ''} `
-  span.setAttributeNode(spanClass)
+        let task_check_el = document.createElement('button')
+        task_check_el.classList.add("check")
+        task_check_el.innerHTML = "check"
 
-  // paragraphe
-  const paragaphe = document.createElement('p')
-  const paragapheText = document.createTextNode(todo.text)
-  paragaphe.appendChild(paragapheText)
+        let task_edit_el = document.createElement('button')
+        task_edit_el.classList.add("edit")
+        task_edit_el.innerHTML = "modifier"
 
-  // button edit
-  const btnEdit = document.createElement('button')
-  const btnEditClass = document.createAttribute('class')
-  btnEditClass.value = 'btn-edit'
-  btnEdit.setAttributeNode(btnEditClass)
-  btnEdit.innerHTML = 'Editer'
+        let task_delete_el = document.createElement('button')
+        task_delete_el.classList.add('delete')
+        task_delete_el.innerHTML = "supprimer"
 
-  btnEdit.addEventListener('click', (e) => {
-    e.stopPropagation()
-    toggleEditMode(index)
-  })
+        task_actions_el.appendChild(task_check_el)
+        task_actions_el.appendChild(task_edit_el);
+        task_actions_el.appendChild(task_delete_el);
 
-  // button delete
-  const btnDelete = document.createElement('button')
-  const btnDeleteClass = document.createAttribute('class')
-  btnDeleteClass.value = 'btn-delete'
-  btnDelete.setAttributeNode(btnDeleteClass)
-  btnDelete.innerHTML = 'Supprimer'
+        task_el.appendChild(task_actions_el);
 
-  btnDelete.addEventListener('click', (e) => {
-    // stopPropagation li
-    e.stopPropagation()
+        list_el.appendChild(task_el);
 
-    if (confirm(`êtes-vous sûr de vouloir supprime la tâche : ${todo.text}?`)) {
-      deleteTodo(index)
-    }
-  })
+        input.value = "";
 
-  li.addEventListener('click', (e) => {
-    toggleTodo(index)
-  })
+        let originalColor = task_el.style.backgroundColor;
+        task_check_el.addEventListener('click', () =>{
+            if (task_el.style.backgroundColor === originalColor) {
+                task_el.style.backgroundColor = "green";
+            } else {
+                task_el.style.backgroundColor = originalColor;
+            }
+        })
 
-  li.append(span, paragaphe, btnEdit, btnDelete)
+        task_edit_el.addEventListener('click', () => {
+            console.log(task_edit_el)
+            if(task_edit_el.innerText.toLowerCase() == "modifier"){
+                task_input_el.removeAttribute("readonly")
+                task_input_el.focus();
+                task_edit_el.innerText = "Sauvegarder"
+            } else {
+                task_input_el.setAttribute("readonly","readonly")
+                task_edit_el.innerText = "Modifier"
+            }
+        });
 
-  return li
-}
-
-// add todo
-const addTodo = (text) => {
-  todos.push({
-    text,
-    done: false,
-    id: Date.now(),
-  })
-  console.log(todos)
-  displayTodo()
-}
-
-// verifie
-const constVerifieErr = (value) => {
-  const spanError = document.createElement('span')
-  const spanErrorClass = document.createAttribute('class')
-  spanErrorClass.value = 'error'
-  const characterMin = 5
-
-  form.insertAdjacentElement('beforebegin', spanError)
-  spanError.setAttributeNode(spanErrorClass)
-
-  if (value == '') {
-    input.style.borderColor = 'red'
-    input.focus()
-    spanError.textContent =
-      'Veuillez remplir le formulaire avant de valider! merci'
-    // minimum size
-  } else if (value.length < characterMin) {
-    spanError.textContent = `La taille minimum est de ${characterMin} charactére`
-  } else {
-    input.style.borderColor = '#ddd'
-    document.querySelectorAll('.error').forEach(function (a) {
-      a.remove()
+        task_delete_el.addEventListener('click', () => {
+            list_el.removeChild(task_el);
+        });
     })
-    input.focus()
+// })
 
-    addTodo(value)
-    input.value = ''
-  }
-}
-
-// delete Todo
-const deleteTodo = (index) => {
-  todos.splice(index, 1)
-  displayTodo()
-}
-// toggleTodo
-const toggleTodo = (index) => {
-  todos[index].done = !todos[index].done
-  displayTodo()
-}
-
-const createTodoEditElement = (todo, index) => {
-  const li = document.createElement('li')
-
-  const input = document.createElement('input')
-  input.text = 'text'
-  input.value = todo.text
-
-  const btnSave = document.createElement('button')
-  btnSave.innerHTML = 'sauvegarder'
-  btnSave.addEventListener('click', (e) => {
-    editTodo(index, input)
-  })
-  input.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      editTodo(index, input)
-    }
-  })
-
-  const btnCancel = document.createElement('button')
-  btnCancel.addEventListener('click', (e) => {
-    e.stopPropagation()
-    toggleEditMode(index)
-  })
-  btnCancel.innerHTML = 'Annuler'
-
-  li.append(input, btnCancel, btnSave)
-  return li
-}
-
-// toggleEditMode
-const toggleEditMode = (index) => {
-  todos[index].editMode = !todos[index].editMode
-  displayTodo()
-}
-
-// editTodo
-const editTodo = (index, input) => {
-  if (input.value === '') {
-    input.style.borderColor = 'red'
-    console.log('vide')
-  } else {
-    const value = input.value
-    todos[index].text = value
-    todos[index].editMode = false
-    displayTodo()
-  }
-}
-
-displayTodo()

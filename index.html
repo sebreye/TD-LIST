@@ -8,16 +8,39 @@
     <link rel="stylesheet" href="./public/css/app.css">
 </head>
 <body>
-    <div class="container">
-        <!-- <span class="error"></span> -->
-        <h1 class="">TO DO LIST</h1>
-        <form action="#">
-            <input type="text">
-            <button class="btn-add">Ajouter</button>
+    <header>
+        <h1>TO DO LIST</h1>
+        <form id="new-td-form">
+            <input type="text" id="new-td-input" placeholder="ajouter une nouvelle tâche">
+            <input type="submit"
+            id="new-td-submit"
+            value="add TD">
+            <div class="select">
+                <select name="todos" class="filter-todo">
+                    <option value="all">Toutes</option>
+                    <option value="completed">Fait</option>
+                    <option value="uncompleted">à faire </option>
+                </select>
+            </div>
         </form>
-        <!-- list todo -->
-        <ul></ul>
-        </div>
+    </header>
+    <main>
+        <section class="TD-LIST">
+            <h2>Tâche</h2>
+            <div id="tasks">
+                <!-- <div class="task">
+                    <div class="content">
+                        <input type="text" class="text"
+                        value="Mes Tasks" readonly>
+                    </div>
+                    <div class="actions">
+                        <button class="edit">Edit</button>
+                        <button class="delete">Delete</button>
+                    </div>
+                </div> -->
+            </div>
+        </section>
+    </main>
     <script src="./public/js/main.js" type="module"></script>
 </body>
     <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
